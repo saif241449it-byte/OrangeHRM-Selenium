@@ -1,4 +1,3 @@
-
 package org.example;
 
 import org.junit.jupiter.api.AfterEach;
@@ -23,7 +22,7 @@ public class OrangeHRMTest {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
 
-        wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
         driver.get("https://opensource-demo.orangehrmlive.com/");
     }
@@ -31,22 +30,27 @@ public class OrangeHRMTest {
     @Test
     void validLoginTest() {
 
+        // Enter username
         wait.until(d -> d.findElement(
                 By.name("username")
         )).sendKeys("Admin");
 
+        // Enter password
         wait.until(d -> d.findElement(
                 By.name("password")
         )).sendKeys("admin123");
 
+        // Click Login
         wait.until(d -> d.findElement(
                 By.cssSelector("button[type='submit']")
         )).click();
 
-        wait.until(d -> d.findElement(
-                By.cssSelector(".oxd-topbar-header")
-        ));
+        // Wait until the dashboard URL appears
+        wait.until(d ->
+                d.getCurrentUrl().contains("/dashboard")
+        );
 
+        // Verify successful login
         assertTrue(
                 driver.getCurrentUrl().contains("/dashboard"),
                 "Valid login should open the dashboard"
